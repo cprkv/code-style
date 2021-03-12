@@ -1,26 +1,30 @@
 #include "some-source-code.h"
+#include <stdint.h>
 #include <stdio.h>
 
-static tSomeStructure* create_some_structure() {
-  return mNewStruct( tSomeStructure,
-    {
-      .value_of_something = eSomeEnumMember,
-      .array = { 1, 2, 3 },
-      .ok = false,
-      .value = rand(),
-    } );
+void SomeStructure_destroy( tSomeStructure** v ) {
+  tSomeStructure* tmp = *v;
+  while( tmp ) {
+    tSomeStructure* del = tmp;
+    tmp = tmp->next;
+    printf("destroy %" PRIu32 "\n", del->value);
+    free( del );
+  }
+  *v = NULL;
 }
 
-int main( int argc, char** argv ) {
-  tSomeStructure* structure = create_some_structure();
-  structure->next = create_some_structure();
-  structure->next->next = create_some_structure();
+uint32_t SomeStructure_max_value( tSomeStructure* v ) {
+  uint32_t m = 0;
+  for( ; v; v = v->next ) {
+    m = mMax( m, v->value );
+  }
+  return m;
+}
 
-  printf( "get_size: %zu\n", SomeStructure_size( structure ) );
-  printf( "get_max_value: %" PRIu32 " \n", SomeStructure_max_value( structure ) );
-
-  SomeStructure_destroy( &structure );
-  printf( "get_size: %zu\n", SomeStructure_size( structure ) );
-
-  return 0;
+size_t SomeStructure_size( tSomeStructure* v ) {
+  size_t size = 0;
+  for( ; v; v = v->next ) {
+    size++;
+  }
+  return size;
 }

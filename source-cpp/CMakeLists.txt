@@ -1,8 +1,8 @@
 project(source-cpp CXX)
 
 set(SOURCES
-  src/some-source-code.cpp
-  src/some-source-code.hpp)
+    src/some-source-code.inl
+    src/some-source-code.hpp src/main.cpp)
 
 add_executable(source-cpp ${SOURCES})
 target_include_directories(source-cpp PRIVATE src)

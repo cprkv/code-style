@@ -2,7 +2,7 @@ project(source-c C)
 
 set(SOURCES
   src/some-source-code.c
-  src/some-source-code.h)
+  src/some-source-code.h src/main.c)
 
 add_executable(source-c ${SOURCES})
 target_include_directories(source-c PRIVATE src)
